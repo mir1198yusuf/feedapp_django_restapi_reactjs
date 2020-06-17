@@ -1,0 +1,12 @@
+#Django ignore
+*.sqlite3
+__pycache__
+*.log
+*.pot
+*.pyc
+#static_root folder
+staticroot/
+#media root folder
+uploads/
+#env file
+.env
