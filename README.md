@@ -25,7 +25,9 @@ So, I learned both of them and built this project.
 ## Brief description of project:
 
 - It is basically like a mini-feeds app like LinkedIn or Facebook where user can create post and other users can see, comment. 
-
+- `feedapi_project` - folder is django project folder (that one with `settings.py`)
+- `feedapi_app` - folder is django api app folder 
+- `frontend-reactjs` - folder contains all frontend React.js code
 
 ## Functionalities included in project:
 
