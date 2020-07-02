@@ -9,6 +9,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from feedapi_app import models
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.shortcuts import render
 
 
 # Create your views here.
@@ -96,3 +97,8 @@ class CommentsView(APIView):
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+#docs view function
+def documentation_view(request):
+	return render(request, 'api_docs.html')

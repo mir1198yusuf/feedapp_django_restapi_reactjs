@@ -73,4 +73,5 @@ So, I learned both of them and built this project.
 
 The project is live at [site](https://bit.ly/feed_django_reactjs_live)
 
+You can see the documentation of APIs at [docs](https://mir1198yusuf1.pythonanywhere.com/api/docs/)
 

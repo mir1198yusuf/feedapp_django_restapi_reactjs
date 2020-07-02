@@ -7,4 +7,5 @@ urlpatterns = [
     path('logout/', knox.views.LogoutView.as_view(), name='knox_logout'),
     path('posts/', views.PostsView.as_view(), name='posts_url'),
     path('posts/<int:post_id>/', views.CommentsView.as_view(), name='comments_url'),
+    path('docs/', views.documentation_view, name='docs_url'),
 ]

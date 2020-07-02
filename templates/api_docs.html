@@ -1,0 +1,86 @@
+<html>
+	<head>
+		<title>Feed APP API documentation</title>
+		<style>
+			code{
+				background-color: lightgrey;
+				color: black;
+			}
+			h1, h3{
+				color: SlateBlue;
+			} 
+		</style>
+	</head>
+	<body style="font-family: Courier;">
+		<h1>API documentation</h1>
+
+		<p>Django REST framework is used to create REST API</p>
+
+		<p>Following API endpoints are created</p>
+
+		<ul>
+			<li>Login endpoint - POST</li>
+			<li>Logout endpoint - POST</li>
+			<li>Posts endpoint - GET/POST</li>
+			<li>Comments endpoint - GET/POST</li>
+		</ul>
+
+		<p><i><b>Note : </b>All api requests example shown here are using httpie library</i></p>
+
+		<h3>Login endpoint - POST </h3>
+		<p>This is used to login a user. We need to pass username, password. In return we get a auth token which we need to pass along with all further subsequent post requests.</p>
+		<p>You can pass values as form-data or json.</p>
+		<p><code>http --form post https://mir1198yusuf1.pythonanywhere.com/api/login/ username=username password=password</code></p>
+		<p><code>http --json post https://mir1198yusuf1.pythonanywhere.com/api/login/ username=username password=password</code></p>
+		<p>The response data for correct username-password will be : </p>
+		<p><code>{ "expiry": "2020-07-03T00:06:39.167536+05:30",	"token": "xxxxxxxxxxxxx", "username": "username" }</code></p>
+		<p>For empty/invalid username-password response would be : </p>
+		<p><code>{"password":["This field may not be blank."],"username":["This field may not be blank."]}</code></p>
+		<p><code>{"non_field_errors":["Unable to log in with provided credentials."]}</code></p>
+
+		<h3>Logout endpoint - POST </h3>
+		<p>This is used to logout a user. We need to pass auth token received from login endpoint as Authorization header. Once user is logout, the auth token is removed from database & considered as invalid for further post request.</p>
+		<p>You can pass values as form-data or json.</p>
+		<p><code>http --form post https://mir1198yusuf1.pythonanywhere.com/api/logout/ 'Authorization: Token xxxxxxxxxxx'</code></p>
+		<p><code>http --json post https://mir1198yusuf1.pythonanywhere.com/api/logout/ 'Authorization: Token xxxxxxxxxxx'</code></p>
+		<p>No response data  will be returned for correct auth token and user will be logged out.</p>
+		<p>For empty/invalid token-header response would be : </p>
+		<p><code>{"detail":"Authentication credentials were not provided."}</code></p>
+		<p><code>{"detail":"Invalid token."}</code></p>
+
+		<h3>Posts endpoint - GET </h3>
+		<p>This is used to get the list of all posts.</p>
+		<p><code>http get https://mir1198yusuf1.pythonanywhere.com/api/posts/</code></p>
+		<p>The response data will be like :</p>
+		<p><code>[{"created_by":{"email":"aaa@gmail.com","id":1,"username":"aaa"},"created_on":"2020-06-18T12:57:40.470161+05:30","created_on_humanized":"2 weeks ago","file":"/media/download.jpeg","id":2,"message":"second post with image"},{"created_by":{"email":"aaa@gmail.com","id":1,"username":"aaa"},"created_on":"2020-06-18T12:57:13.274334+05:30","created_on_humanized":"2 weeks ago","file":null,"id":1,"message":"first post"}]</code></p>
+
+		<h3>Posts endpoint - POST </h3>
+		<p>This is used to create a new post. We have to pass auth token in header.</p>
+		<p>Since it contains a file field, we have to send data in form-data only. no json.</p>
+		<p>File field is optional but message is mandatory</p>
+		<p><code>http --form post https://mir1198yusuf1.pythonanywhere.com/api/posts/ message="this is the post message" file@runthis.txt 'Authorization: Token xxxxxxxx'</code></p>
+		<p>The response data will be created post :</p>
+		<p><code>{"created_by":{"email":"aaa@gmail.com","id":2,"username":"aaa"},"created_on":"2020-07-02T15:15:00.948653+05:30","created_on_humanized":"now","file":"/media/runthis.txt","id":9,"message":"this is the post message"}</code></p>
+		<p>For empty/invalid values, response can be like :</p>
+		<p><code>{"detail":"Authentication credentials were not provided."}</code></p>
+		<p><code>{"message":["This field is required."]}</code></p>
+
+		<h3>Comments endpoint - GET </h3>
+		<p>This is used to get list of all comments for a post. We have to pass a valid post id in url.</p>
+		<p><code>http get https://mir1198yusuf1.pythonanywhere.com/api/posts/2/</code></p>
+		<p>The response data will be like :</p>
+		<p><code>[{"created_by":{"email":"aaa@gmail.com","id":1,"username":"aaa"},"created_on":"2020-06-18T13:02:09.492529+05:30","created_on_humanized":"2 weeks ago","id":1,"message":"first comment","post":{"created_by":{"email":"aaa@gmail.com","id":1,"username":"aaa"},"created_on":"2020-06-18T12:57:40.470161+05:30","created_on_humanized":"2 weeks ago","file":"/media/download.jpeg","id":2,"message":"second post with image"}}]</code></p>
+
+		<h3>Comments endpoint - POST </h3>
+		<p>This is used to create a new comment for a given post. We have to pass valid post id in url and auth token in header.</p>
+		<p>We can pass data in both form-data and json format.</p>
+		<p><code>http --json post https://mir1198yusuf1.pythonanywhere.com/api/posts/1/  message="second comment"  'Authorization: Token xxxxxx'</code></p>
+		<p><code>http --form post https://mir1198yusuf1.pythonanywhere.com/api/posts/1/  message="second comment"  'Authorization: Token xxxxxx'</code></p>
+		<p>The response data will be created comment :</p>
+		<p><code>{"created_by":{"email":"","id":2,"username":"aaa"},"created_on":"2020-07-02T15:29:27.753405+05:30","created_on_humanized":"now","id":4,"message":"second comment","post":{"created_by":{"email":"aaa@gmail.com","id":1,"username":"aaa"},"created_on":"2020-06-18T12:57:13.274334+05:30","created_on_humanized":"2 weeks ago","file":null,"id":1,"message":"first post"}}</code></p>
+		<p>For empty/invalid values, response can be like :</p>
+		<p><code>{"detail":"Authentication credentials were not provided."}</code></p>
+		<p><code>{"message":["This field is required."]}</code></p>
+
+	</body>
+</html>
