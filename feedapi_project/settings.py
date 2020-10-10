@@ -141,3 +141,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
 #cors allow request
 CORS_ORIGIN_ALLOW_ALL = True
+
+#auth class - removing default session authentication to exclude csrf token passing
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
